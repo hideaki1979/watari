@@ -17,7 +17,7 @@
                 <span>本人確認</span>
             </a>
             <!-- 出品登録 -->
-            <a href="#" class="block w-32 h-32 p-6 bg-gray-100 flex flex-col items-center justify-center shadow-md hover:bg-gray-200">
+            <a href="{{ route('items.index', ['user_id' => Auth::user()->id]) }}" class="block w-32 h-32 p-6 bg-gray-100 flex flex-col items-center justify-center shadow-md hover:bg-gray-200">
                 <i class="fa-solid fa-hand-holding-heart w-8 h-8 mb-2"></i>
                 <span>出品登録</span>
             </a>
@@ -27,7 +27,7 @@
                 <span>購入履歴</span>
             </a>
             <!-- 引渡場所 -->
-            <a href="#" class="block w-32 h-32 p-6 bg-gray-100 flex flex-col items-center justify-center shadow-md hover:bg-gray-200">
+            <a href="{{ route('deliveries.index', ['user_id' => Auth::user()->id]) }}" class="block w-32 h-32 p-6 bg-gray-100 flex flex-col items-center justify-center shadow-md hover:bg-gray-200">
                 <i class="fa-solid fa-people-arrows w-8 h-8 mb-2"></i>
                 <span>引渡場所</span>
             </a>
