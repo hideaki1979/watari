@@ -10,7 +10,8 @@ class Item extends Model
     /** @use HasFactory<\Database\Factories\ItemFactory> */
     use HasFactory;
 
-    $fillable = [
+    protected $fillable = [
+        'user_id',
         'category', 
         'item_name', 
         'description', 
