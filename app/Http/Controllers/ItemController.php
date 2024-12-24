@@ -102,7 +102,13 @@ class ItemController extends Controller
      */
     public function show(Item $item)
     {
-        //
+      $relatedItems = Item::where('user_id', $item->user_id)
+      ->where('id', '!=', $item->id)
+      ->where('list_status', 0)  // 販売中の商品のみ
+      ->latest()  // 最新の商品から
+      ->take(4)   // 4件まで
+      ->get();
+      return view('items.show', compact('item', 'relatedItems'));
     }
 
     /**
@@ -128,4 +134,16 @@ class ItemController extends Controller
     {
         //
     }
+
+    public function buy(Item $item)
+  {
+      // list_statusを1（売却済み）に更新
+      $item->update([
+          'list_status' => 1
+      ]);
+
+      // 購入完了ページへリダイレクト
+      return view('items.buy', compact('item'));
 }
+}
+

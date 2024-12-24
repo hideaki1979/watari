@@ -21,6 +21,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('deliveries', DeliveryController::class);
     Route::resource('items', ItemController::class);
     Route::resource('dms', DmController::class);
+    Route::post('/items/{item}/buy', [ItemController::class, 'buy'])->name('items.buy');
 });
 
 Route::get('/account', function() {
