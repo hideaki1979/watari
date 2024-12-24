@@ -22,9 +22,6 @@
                        data-lng="{{ $delivery->longitude }}"
                        data-address="{{ $delivery->address }}">
                         {{ $delivery->address }}
-                        <span class="text-xs text-gray-500">
-                            ({{ $delivery->created_at->format('Y/m/d H:i') }})
-                        </span>
                     </p>
                 @empty
                     <p class="text-sm text-gray-500">
