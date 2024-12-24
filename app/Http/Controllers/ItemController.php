@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
+use App\Models\Delivery;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Services\ItemService;
@@ -108,7 +109,11 @@ class ItemController extends Controller
       ->latest()  // 最新の商品から
       ->take(4)   // 4件まで
       ->get();
-      return view('items.show', compact('item', 'relatedItems'));
+    // 配送先住所の取得
+      $delivery = Delivery::where('user_id', $item->user_id)->first();
+
+      // viewに両方のデータを渡す
+      return view('items.show', compact('item', 'relatedItems', 'delivery'));
     }
 
     /**

@@ -47,14 +47,6 @@
         <div class="mt-8">
             <a href="{{ route('items.create') }}" class="block text-center bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600">出品登録</a>
         </div>
-
-        <!-- {{-- 仮ルート Button --}} -->
-        <div class="p-4">
-            <a href="{{ route('items.show', 1) }}" class="block w-full bg-green-500 text-white py-3 rounded-lg font-medium text-center">
-                出品者への仮ルート
-            </a>
-        </div>
-    </>
      <!-- Footer -->
      @section('footer')
      <x-footer />

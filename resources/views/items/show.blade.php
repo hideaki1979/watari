@@ -44,8 +44,7 @@
 
             <!-- 住所情報 -->
             <p class="text-sm text-gray-600 mb-4">
-                〒150-0001 東京都渋谷区神宮前6丁目3−5−3 011<br>
-                JUNCTION Harajuku (JUNCTION space)
+            {{ $delivery->address ?? '住所が登録されていません' }}
             </p>
 
             <!-- 注文状況 -->
