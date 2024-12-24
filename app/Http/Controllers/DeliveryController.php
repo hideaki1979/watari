@@ -16,8 +16,15 @@ class DeliveryController extends Controller
      */
     public function index()
     {
-      $deliveries = Delivery::with('user')->latest()->get();
-      return view('deliveries.index', compact('deliveries'));
+      $deliveries = Delivery::with('user')
+          ->where('user_id', Auth::id())
+          ->latest()
+          ->get();
+      
+      // APIキーを追加
+      $apiKey = env('API_KEY');
+      // 両方のデータをviewに渡す
+      return view('deliveries.index', compact('deliveries', 'apiKey'));
     }
 
     /**
