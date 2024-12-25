@@ -19,7 +19,7 @@
                 <!-- 出品中データを表示 -->
                 @foreach($availableItems as $item)
                     <div class="flex items-center mb-4">
-                        <img src="{{ $item->image_1 }}" alt="{{ $item->item_name }}" class="w-16 h-16 object-cover rounded">
+                        <img src="{{ asset($item->image_1) }}" alt="{{ $item->item_name }}" class="w-16 h-16 object-cover rounded">
                         <div class="ml-4">
                             <p class="text-gray-700">{{ $item->item_name }}</p>
                             <p class="text-sm text-gray-500">期限: {{ $item->expiry_date }}</p>
@@ -47,6 +47,7 @@
         <div class="mt-8">
             <a href="{{ route('items.create') }}" class="block text-center bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600">出品登録</a>
         </div>
+    </>
      <!-- Footer -->
      @section('footer')
      <x-footer />
