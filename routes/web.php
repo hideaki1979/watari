@@ -21,11 +21,17 @@ Route::middleware('auth')->group(function () {
     Route::resource('deliveries', DeliveryController::class);
     Route::resource('items', ItemController::class);
     Route::resource('dms', DmController::class);
+    Route::get('/main', [ItemController::class, 'main'])->name('items.main');
+    Route::get('/seasonings', [ItemController::class, 'showSeasonings'])->name('items.seasonings');
+    Route::get('/foods', [ItemController::class, 'showFoods'])->name('items.foods');
+    Route::get('/map', [ItemController::class, 'showMap'])->name('items.map');
+    Route::get('/api/locations', [ItemController::class, 'fetchLocations']);
     Route::post('/items/{item}/buy', [ItemController::class, 'buy'])->name('items.buy');
+
 });
 
-Route::get('/account', function() {
+Route::get('/account', function () {
     return view('account.account');
 })->name('account')->middleware('auth');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
