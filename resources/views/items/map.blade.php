@@ -182,7 +182,7 @@
             mainItemImage.alt = location.item_name;
 
             const mainItemLink = document.getElementById('main-item-link');
-            mainItemLink.href = `/items/${location.item_id}`; // 該当商品のリンクを設定
+            mainItemLink.href = `items/${location.item_id}`; // 該当商品のリンクを設定
 
             // 他の出品物を設定
             const userItemsContainer = document.getElementById('user-items');
