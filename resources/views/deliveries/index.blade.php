@@ -69,7 +69,6 @@
       // 要素の取得
       const mapImg = document.getElementById('static-map');
       const placeholder = document.getElementById('map-placeholder');
-      console.log("こんにちは");
       // クリックイベントの追加
       document.querySelectorAll('[data-lat]').forEach(element => {
           element.addEventListener('click', () => {
@@ -83,7 +82,6 @@
                   + `&markers=color:red%7C${lat},${lng}`
                   + `&language=ja`
                   + `&key={{ $apiKey }}`;
-                  console.log(lat, lng);
               // 地図の表示切り替え
               mapImg.src = mapUrl;
               placeholder.classList.add('hidden');

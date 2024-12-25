@@ -23,6 +23,7 @@ class DeliveryController extends Controller
       
       // APIキーを追加
       $apiKey = env('API_KEY');
+
       // 両方のデータをviewに渡す
       return view('deliveries.index', compact('deliveries', 'apiKey'));
     }

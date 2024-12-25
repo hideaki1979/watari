@@ -194,27 +194,26 @@ class ItemController extends Controller
     // }
 
 
-
-
     public function fetchLocations(Request $request)
     {
         $query = $request->query('query');
         $items = Item::with('user') // userリレーションを事前ロード
-            ->where('item_name', 'like', "%$query%")
-            ->get();
-
+                    ->where('item_name', 'like', "%$query%")
+                    ->get();
+    
         $locations = [];
         foreach ($items as $item) {
             $delivery = Delivery::where('user_id', $item->user_id)->first(); // 配送情報を取得
-
+    
             if ($delivery) {
                 // ユーザーの他の出品物を取得
                 $otherItems = Item::where('user_id', $item->user_id)
-                    ->where('id', '!=', $item->id) // 現在のアイテム以外
-                    ->get(['item_name', 'image_1']);
-
+                                ->where('id', '!=', $item->id) // 現在のアイテム以外
+                                ->get(['id', 'item_name', 'image_1']); // IDも含めて取得
+    
                 // 必要な情報を配列に格納
                 $locations[] = [
+                    'item_id' => $item->id, // 現在のアイテムのID
                     'user_name' => $item->user->name, // ユーザー名
                     'item_name' => $item->item_name, // 現在のアイテム名
                     'image_1' => $item->image_1, // 現在のアイテムの画像
@@ -225,9 +224,55 @@ class ItemController extends Controller
                 ];
             }
         }
-
+    
         return response()->json($locations); // JSON形式でレスポンスを返す
     }
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // public function fetchLocations(Request $request)
+    // {
+    //     $query = $request->query('query');
+    //     $items = Item::with('user') // userリレーションを事前ロード
+    //         ->where('item_name', 'like', "%$query%")
+    //         ->get();
+
+    //     $locations = [];
+    //     foreach ($items as $item) {
+    //         $delivery = Delivery::where('user_id', $item->user_id)->first(); // 配送情報を取得
+
+    //         if ($delivery) {
+    //             // ユーザーの他の出品物を取得
+    //             $otherItems = Item::where('user_id', $item->user_id)
+    //                 ->where('id', '!=', $item->id) // 現在のアイテム以外
+    //                 ->get(['item_name', 'image_1']);
+
+    //             // 必要な情報を配列に格納
+    //             $locations[] = [
+    //                 'user_name' => $item->user->name, // ユーザー名
+    //                 'item_name' => $item->item_name, // 現在のアイテム名
+    //                 'image_1' => $item->image_1, // 現在のアイテムの画像
+    //                 'address' => $delivery->address, // 配送住所
+    //                 'latitude' => $delivery->latitude, // 緯度
+    //                 'longitude' => $delivery->longitude, // 経度
+    //                 'items' => $otherItems->toArray(), // 他の出品物
+    //             ];
+    //         }
+    //     }
+
+    //     return response()->json($locations); // JSON形式でレスポンスを返す
+    // }
 
     public function buy(Item $item)
     {
