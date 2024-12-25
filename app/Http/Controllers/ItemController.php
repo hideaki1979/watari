@@ -73,7 +73,7 @@ class ItemController extends Controller
                 // ファイル名を生成して保存
                 $fileName = $request->file($imageField)->getClientOriginalName();
                 $path = $request->file($imageField)->storeAs($folderPath, $fileName, 'public');
-                $imagePaths[$imageField] = Storage::url($path); // パブリックURLを取得
+                // $imagePaths[$imageField] = Storage::url($path); // パブリックURLを取得
                 $imagePaths[$imageField] = "storage/{$path}";
                 // $imagePaths[$imageField] = asset('storage/' . $path);   // asset関数を使用してURLを生成
             } else {
