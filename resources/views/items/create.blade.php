@@ -62,7 +62,7 @@
 
             <!-- Expiry Date -->
             <div class="mb-4">
-                <label for="expiry_date" class="block text-gray-700 font-bold mb-2">有効期限</label>
+                <label for="expiry_date" class="block text-gray-700 font-bold mb-2">賞味期限</label>
                 <input type="date" name="expiry_date" id="expiry_date" class="block w-full border-gray-300 rounded focus:ring focus:ring-green-500">
             </div>
 
