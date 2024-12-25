@@ -14,7 +14,7 @@
             {{-- 画像 --}}
             <div class="mb-8 flex justify-center h-max">
                 <img 
-                  src="{{ asset('storage/shoppingbag.png') }}"  
+                  src="{{ asset('images/shoppingbag.png') }}"  
                   alt="shopping bags" 
                   class="w-4/5 h-auto max-w-md object-contain"
                 >
