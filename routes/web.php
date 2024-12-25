@@ -25,7 +25,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/seasonings', [ItemController::class, 'showSeasonings'])->name('items.seasonings');
     Route::get('/foods', [ItemController::class, 'showFoods'])->name('items.foods');
     Route::get('/map', [ItemController::class, 'showMap'])->name('items.map');
-    Route::get('/api/locations', [ItemController::class, 'fetchLocations']);
+    Route::get('api/locations', [ItemController::class, 'fetchLocations']);
     Route::post('/items/{item}/buy', [ItemController::class, 'buy'])->name('items.buy');
     
 

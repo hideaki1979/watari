@@ -131,7 +131,7 @@
 
         // サーバーからロケーションデータを取得
         function fetchLocations(query) {
-            fetch(`/api/locations?query=${query}`)
+            fetch(`api/locations?query=${query}`)
                 .then(response => response.json())
                 .then(data => {
                     clearMarkers();
