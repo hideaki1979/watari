@@ -26,7 +26,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/foods', [ItemController::class, 'showFoods'])->name('items.foods');
     Route::get('/map', [ItemController::class, 'showMap'])->name('items.map');
     Route::get('/api/locations', [ItemController::class, 'fetchLocations']);
-    
+    Route::post('/items/{item}/buy', [ItemController::class, 'buy'])->name('items.buy');
+
 });
 
 Route::get('/account', function () {
