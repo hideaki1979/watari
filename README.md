@@ -1,66 +1,23 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
-
-## About Laravel
-
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
-
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# ①課題名
+お料理レスキューアプリ「ワタリ119」
+## ②課題内容（どんな作品か）
+余った食品、調味料を個人間で売買できるc to cサービス
+## ③アプリのデプロイURL
+https://moriai.sakura.ne.jp/project/
+## ④アプリのログイン用IDまたはPassword（ある場合）
+- ID: 各自新規登録をお願いします
+- PW: 各自新規登録をお願いします
+## ⑤工夫した点・こだわった点
+- サイトとして使用できる最低限の機能は実装することを絶対条件として、それを満たした点
+- Mapのページで食品で検索をかけ、さららに距離で絞り込みをできるようにした点
+- Issueでタスクを管理してプルリクをgithubにmergeする際にcloseコマンドでissueのタスクを消去するやり方をした点
+## ⑥難しかった点・次回トライしたいこと（又は機能）
+- 出品登録の際に画像保存があり、画像のアップロードとURLパスのDB登録はうまくいったが、DB登録したパスをもとに画面に画像表示する際に403エラーが発生し、表示されず、その調査と対応に時間がかかりました。原因はシンボリックリンクの作成とアップロードしたファイルの権限設定漏れだとわかり何とか対応できました。
+ [参考サイト](https://qiita.com/yukisku/items/d8f945adbc1bc31dd148)
+- 同じく画像系ですが、ローカル環境だと画像表示されるのにさくらサーバーでは表示されない事象が発生。下記サイトを参考にDB保存した画像URLが絶対パスではなく相対パスにて画像URLを保存に修正したところ、事象が改善されました。
+ [参考サイト](https://qiita.com/k-tabuchi/items/3720fa39a530d49b43fc)
+- 今回初めてペアプログラミング（？）を実施しましたが、
+こちらの伝え方が悪いのもあり、相手が理解してもらうのに時間がかかってしまった。
+教え方ひとつで相手の理解度の速さが変わると思うので、
+口下手なところがありますが、もう少し理解しやすい表現を身に付けたい。
+-laravelに関する基本的な理解が追いついていないため、内部で動いているロジックを把握するのにかなりの時間を使ってしまった。
