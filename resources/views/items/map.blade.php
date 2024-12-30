@@ -12,7 +12,6 @@
     <script src="https://kit.fontawesome.com/3893656067.js" crossorigin="anonymous"></script>
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCgq9tyJWnjgm0qPKeWmGzCenlTbrq7Tr8&libraries=places"></script> <!-- Google Maps API -->
 </head>
 
 
@@ -65,9 +64,6 @@
                     </a>
                 </div>
 
-            
-
-
                 <!-- 他の出品物 -->
                 <p>他の出品物</p>
                 <div id="user-items" class="grid grid-cols-3 gap-4">
@@ -79,54 +75,97 @@
             </div>
         </div>
 
-
-
-
-
         <!-- Footer -->
         <footer class="flex justify-around p-3 bg-gray-800 text-white">
-    <a href="{{ route('items.main') }}" class="flex flex-col items-center space-y-1 text-center text-sm hover:text-blue-400">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h11M9 21V3m4 18V3m4 18V3m4 18V3" />
-        </svg>
-        <span>ホーム</span>
-    </a>
-    <a href="{{ route('account') }}" class="flex flex-col items-center space-y-1 text-center text-sm hover:text-blue-400">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.24 3.96a4.5 4.5 0 00-.24 9h.24a5.5 5.5 0 00.24-9h-.24zM8 8a4 4 4 0 104 4H8V8zM5 8v8h6m2 4a6 6 0 00-12 0h12z" />
-        </svg>
-        <span>アカウント</span>
-    </a>
-</footer>
-
+            <a href="{{ route('items.main') }}" class="flex flex-col items-center space-y-1 text-center text-sm hover:text-blue-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h11M9 21V3m4 18V3m4 18V3m4 18V3" />
+                </svg>
+                <span>ホーム</span>
+            </a>
+            <a href="{{ route('account') }}" class="flex flex-col items-center space-y-1 text-center text-sm hover:text-blue-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.24 3.96a4.5 4.5 0 00-.24 9h.24a5.5 5.5 0 00.24-9h-.24zM8 8a4 4 4 0 104 4H8V8zM5 8v8h6m2 4a6 6 0 00-12 0h12z" />
+                </svg>
+                <span>アカウント</span>
+            </a>
+        </footer>
     </div>
-
     <!-- Google Maps API用スクリプト -->
+    <script>
+        (g => {
+            var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary",
+                q = "__ib__", m = document, b = window;
+            b = b[c] || (b[c] = {});
+            var d = b.maps || (b.maps = {}), r = new Set,
+                e = new URLSearchParams,
+                u = () => h || (h = new Promise(async (f, n) => {
+                    await (a = m.createElement("script"));
+                    e.set("libraries", [...r] + "");
+                    for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]);
+                    e.set("callback", c + ".maps." + q);
+                    a.src = `https://maps.${c}apis.com/maps/api/js?` + e;
+                    d[q] = f;
+                    a.onerror = () => h = n(Error(p + " could not load."));
+                    a.nonce = m.querySelector("script[nonce]")?.nonce || "";
+                    m.head.append(a);
+                }));
+            d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n));
+            })({
+                key: "AIzaSyCgq9tyJWnjgm0qPKeWmGzCenlTbrq7Tr8",
+                v: "weekly",
+                libraries: ["places", "marker"]
+        });
+    </script>
     <script>
         let map;
         let markers = [];
 
         // 地図の初期化
-        function initMap() {
-            map = new google.maps.Map(document.getElementById('map'), {
-                center: {
-                    lat: 35.6895,
-                    lng: 139.6917
-                }, // 初期位置：東京
-                zoom: 13
-            });
+        async function initMap() {
+            try {
+                // Google Maps JavaScript APIで必要なライブラリをロード
+                const { Map } = await google.maps.importLibrary("maps");
+                const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+                const { PlacesService } = await google.maps.importLibrary("places");
 
-            // 検索バーのイベント
-            document.getElementById('search-bar').addEventListener('input', function() {
-                const query = this.value;
-                fetchLocations(query);
-            });
+                const mapElement = document.getElementById('map');
+                if (!mapElement) {
+                    console.error('Map element not found');
+                    return;
+                }
+                map = new Map(mapElement, {
+                    center: {
+                        lat: 35.6895,
+                        lng: 139.6917
+                    }, // 初期位置：東京
+                    zoom: 13,
+                    mapId: "c1be8225dc3df8f",
+                });
 
-            // 距離指定イベント
-            document.getElementById('distance-select').addEventListener('change', function() {
-                const distance = this.value;
-                updateMarkers(distance);
-            });
+                // Places Serviceの初期化
+                const placesService = new PlacesService(map);
+
+                // 検索バーのイベント
+                const searchBar = document.getElementById('search-bar');
+                if (searchBar) {
+                    searchBar.addEventListener('input', function() {
+                        const query = this.value;
+                        fetchLocations(query);
+                    });
+                }
+
+                // 距離指定イベント
+                const distanceSelect = document.getElementById('distance-select');
+                if (distanceSelect) {
+                    distanceSelect.addEventListener('change', function() {
+                        const distance = this.value;
+                        updateMarkers(distance);
+                    });
+                }
+            } catch (error) {
+                console.error('Error initializing map:', error);
+            }
         }
 
         // サーバーからロケーションデータを取得
@@ -141,32 +180,31 @@
                 });
         }
 
-
         function closeModal() {
             document.getElementById('detail-modal').classList.add('hidden');
         }
 
-
-
-
         // マーカーを地図に追加
-        function addMarker(location) {
-            const marker = new google.maps.Marker({
-                position: {
-                    lat: parseFloat(location.latitude),
-                    lng: parseFloat(location.longitude)
-                },
-                map: map,
-                title: location.item_name
+        async function addMarker(location) {
+            try {
+                const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+                const marker = new AdvancedMarkerElement({
+                    position: {
+                        lat: parseFloat(location.latitude),
+                        lng: parseFloat(location.longitude)
+                    },
+                    map: map,
+                    title: location.item_name
+                });
 
+                marker.addListener('click', () => {
+                    showDetails(location);
+                });
 
-            });
-
-            marker.addListener('click', () => {
-                showDetails(location);
-            });
-
-            markers.push(marker);
+                markers.push(marker);
+            } catch (error) {
+                console.error('Error adding marker:', error);
+            }        
         }
 
         function showDetails(location) {
@@ -193,7 +231,7 @@
                 itemDiv.innerHTML = `
             <img src="${item.image_1}" alt="${item.item_name}" class="w-16 h-16 rounded-lg mb-2">
             <span class="text-sm text-gray-700">${item.item_name}</span>
-        `;
+            `;
                 userItemsContainer.appendChild(itemDiv);
             });
 
@@ -201,21 +239,11 @@
             document.getElementById('detail-modal').classList.remove('hidden');
         }
 
-
-
-
-
-
         // マーカーをクリア
         function clearMarkers() {
             markers.forEach(marker => marker.setMap(null));
             markers = [];
         }
-
-        // 距離によるマーカー更新
-        // function updateMarkers(distance) {
-        //     // TODO: 距離によるフィルタリングを追加
-        // }
 
         // 現在地図の中心位置からの距離を計算する関数
         function calculateDistance(lat1, lng1, lat2, lng2) {
@@ -263,12 +291,7 @@
                 });
         }
 
-
-
-
-
         window.onload = initMap;
     </script>
 </body>
-
 </html>
