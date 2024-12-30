@@ -12,7 +12,7 @@
     <script src="https://kit.fontawesome.com/3893656067.js" crossorigin="anonymous"></script>
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <script src="https://maps.googleapis.com/maps/api/js?key=xxxxxxxxx&libraries=places"></script> <!-- Google Maps API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCgq9tyJWnjgm0qPKeWmGzCenlTbrq7Tr8&libraries=places"></script> <!-- Google Maps API -->
 </head>
 
 

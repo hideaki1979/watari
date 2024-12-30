@@ -1,0 +1,33 @@
+name: Watari App Deploy to Server
+
+#devブランチへのpush時にAction起動
+on:
+  push:
+    branches:
+      - dev
+
+# ワークフローレベルでパーミッションをすべて無効化（セキュリティ対策）
+permissions: {}
+
+jobs:
+  deployment:
+    # Ubuntuランナーを使用
+    runs-on: ubuntu-latest
+    # デフォルト6時間のためタイムアウトを10分に設定
+    timeout-minutes: 10
+    permissions:
+      contents: read  # ジョブレベルでは必要最低限の権限を指定（セキュリティ対策）
+    steps:
+      # コードをチェックアウト(バージョンはハッシュ化)
+      - name: Checkout code
+        uses: actions/checkout@cbb722410c2e876e24abbe8de2cc27693e501dcb
+
+      # FTPサーバへデプロイ(バージョンはハッシュ化)
+      - name: Watari App Deploy to Server
+        uses: SamKirkland/FTP-Deploy-Action@8e83cea8672e3fbcbb9fdafff34debf6ae4c5f65
+        with:
+          server: ${{ secrets.FTP_SERVER_HOST }}        #FTPサーバー名（secretを使用）
+          username: ${{ secrets.FTP_SERVER_ACCOUNT }}   #FTPユーザー名（secretを使用）
+          password: ${{ secrets.FTP_SERVER_PASSWORD }}  #FTPパスワード（secretを使用）
+          local-dir: ./                                 #ローカルディレクトリ
+          server-dir: /home/kagami-hide/project/        #さくらサーバーのデプロイ先のディレクトリ
