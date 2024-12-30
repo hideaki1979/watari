@@ -14,7 +14,7 @@ jobs:
     # Ubuntuランナーを使用
     runs-on: ubuntu-latest
     # デフォルト6時間のためタイムアウトを10分に設定
-    timeout-minutes: 10
+    timeout-minutes: 60
     permissions:
       contents: read  # ジョブレベルでは必要最低限の権限を指定（セキュリティ対策）
     steps:
