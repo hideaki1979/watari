@@ -25,6 +25,7 @@
                     type="text"
                     id="search-bar"
                     placeholder="検索"
+                    value="{{ $query ?? '' }}"
                     class="flex-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
             <div class="flex items-center space-x-2">
@@ -149,9 +150,15 @@
                 // 検索バーのイベント
                 const searchBar = document.getElementById('search-bar');
                 if (searchBar) {
-                    searchBar.addEventListener('input', function() {
-                        const query = this.value;
-                        fetchLocations(query);
+                    searchBar.addEventListener('keypress', function() {     // inputイベントではなくkeypressイベントに変更
+                        // Enterキー押下時にmap検索を行う。
+                        if(event.key === "Enter"){
+                            const query = this.value;   // 検索バーの入力値を設定
+                            const url = new URL(window.location.href);  // 現在のURLを取得
+                            url.searchParams.set("query", query);
+                            window.location.href = url.toString();
+                            fetchLocations(query);
+                        }
                     });
                 }
 
@@ -160,7 +167,8 @@
                 if (distanceSelect) {
                     distanceSelect.addEventListener('change', function() {
                         const distance = this.value;
-                        updateMarkers(distance);
+                        const query = searchBar.value;
+                        updateMarkers(distance, query);
                     });
                 }
             } catch (error) {
@@ -264,7 +272,7 @@
         }
 
         // 距離によるマーカー更新
-        function updateMarkers(distance) {
+        function updateMarkers(distance, query) {
             const center = map.getCenter(); // 地図の中心位置を取得
             const centerLat = center.lat();
             const centerLng = center.lng();
@@ -273,7 +281,7 @@
             clearMarkers();
 
             // 新しい距離に基づいてマーカーを表示
-            fetch(`/api/locations`) // すべてのロケーションを取得
+            fetch(`api/locations?query=${query}`) // すべてのロケーションを取得
                 .then(response => response.json())
                 .then(data => {
                     data.forEach(location => {
@@ -292,6 +300,14 @@
         }
 
         window.onload = initMap;
+
+        // 初期表示時にクエリパラメータ（商品名）を反映して検索
+        document.addEventListener('DOMContentLoaded', function() {
+            const query = "{{ $query ?? '' }}";
+            if(query) {
+                fetchLocations(query);
+            }
+        });
     </script>
 </body>
 </html>
