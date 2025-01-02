@@ -119,7 +119,6 @@
         });
     </script>
     <script>
-        
         let map;
         let markers = [];
 
