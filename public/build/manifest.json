@@ -1,6 +1,6 @@
 {
   "resources/css/app.css": {
-    "file": "assets/app-DeAvyTf6.css",
+    "file": "assets/app-CXh9I8aa.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
@@ -8,6 +8,12 @@
     "file": "assets/app-BPnfBaih.js",
     "name": "app",
     "src": "resources/js/app.js",
+    "isEntry": true
+  },
+  "resources/js/map.js": {
+    "file": "assets/map-2HHzDScF.js",
+    "name": "map",
+    "src": "resources/js/map.js",
     "isEntry": true
   }
 }
