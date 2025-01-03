@@ -23,20 +23,29 @@
         <!-- Main Content -->
         <main class="flex-1 overflow-y-auto p-4">
             <div class="grid grid-cols-3 gap-4">
-                <img src="https://via.placeholder.com/100" alt="調味料1" class="rounded-lg">
-                <img src="https://via.placeholder.com/100" alt="調味料2" class="rounded-lg">
-                <img src="https://via.placeholder.com/100" alt="調味料3" class="rounded-lg">
-                <img src="https://via.placeholder.com/100" alt="調味料4" class="rounded-lg">
-                <img src="https://via.placeholder.com/100" alt="調味料5" class="rounded-lg">
-                <img src="https://via.placeholder.com/100" alt="調味料6" class="rounded-lg">
+                <a href="{{ route('items.map', ['query' => '塩']) }}" class="block">
+                    <img src="{{ asset('images/salt_sample.png') }}" alt="塩" class="w-full h-32 object-cover rounded-lg">
+                </a>
+                <a href="{{ route('items.map', ['query' => 'ソース']) }}" class="block">
+                    <img src="{{ asset('images/sause_sample.jpg') }}" alt="ソース" class="w-full h-32 object-cover rounded-lg">
+                </a>
+                <a href="{{ route('items.map', ['query' => '醤油']) }}" class="block">
+                    <img src="{{ asset('images/soysause_sample.jpg') }}" alt="醤油" class="w-full h-32 object-cover rounded-lg">
+                </a>
+                <a href="{{ route('items.map', ['query' => 'にんにく']) }}" class="block">
+                    <img src="{{ asset('images/garlic_sample.jpeg') }}" alt="にんにく" class="w-full h-32 object-cover rounded-lg">
+                </a>
+                <a href="{{ route('items.map', ['query' => 'しょうが']) }}" class="block">
+                    <img src="{{ asset('images/ginger_sample.jpg') }}" alt="しょうが" class="w-full h-32 object-cover rounded-lg">
+                </a>
+                <a href="{{ route('items.map', ['query' => 'マヨネーズ']) }}" class="block">
+                    <img src="{{ asset('images/mayonnaise.jpeg') }}" alt="マヨネーズ" class="w-full h-32 object-cover rounded-lg">
+                </a>
             </div>
         </main>
 
         <!-- Footer -->
-        <footer class="flex justify-around p-3 bg-gray-800 text-white">
-            <button class="text-lg hover:text-blue-400">ホーム</button>
-            <button class="text-lg hover:text-blue-400">アカウント</button>
-        </footer>
+        <x-footer-ver2 />
     </div>
 </body>
 </html>

@@ -41,45 +41,40 @@
 
             <!-- Section 2 -->
             <section class="my-5">
-    <h2 class="text-lg font-medium text-gray-700 px-5 mb-2">調味料から探す</h2>
-    <a href="{{ route('items.seasonings') }}" class="text-blue-500 px-5 mb-2 inline-block">調味料から探す</a>
-    <div class="grid grid-cols-3 gap-3 px-3">
-        <a href="{{ route('items.map', ['query' => '塩']) }}" class="block">
-            <img src="{{ asset('images/salt_sample.png') }}" alt="塩" class="w-full h-32 object-cover rounded-lg">
-        </a>
-        <a href="{{ route('items.map', ['query' => 'ソース']) }}" class="block">
-            <img src="{{ asset('images/sause_sample.jpg') }}" alt="ソース" class="w-full h-32 object-cover rounded-lg">
-        </a>
-        <a href="{{ route('items.map', ['query' => '醤油']) }}" class="block">
-            <img src="{{ asset('images/soysause_sample.jpg') }}" alt="醤油" class="w-full h-32 object-cover rounded-lg">
-        </a>
-    </div>
-</section>
+                <h2 class="text-lg font-medium text-gray-700 px-5 mb-2">調味料から探す</h2>
+                <a href="{{ route('items.seasonings') }}" class="text-blue-500 px-5 mb-2 inline-block">調味料から探す</a>
+                <div class="grid grid-cols-3 gap-3 px-3">
+                    <a href="{{ route('items.map', ['query' => '塩']) }}" class="block">
+                        <img src="{{ asset('images/salt_sample.png') }}" alt="塩" class="w-full h-32 object-cover rounded-lg">
+                    </a>
+                    <a href="{{ route('items.map', ['query' => 'ソース']) }}" class="block">
+                        <img src="{{ asset('images/sause_sample.jpg') }}" alt="ソース" class="w-full h-32 object-cover rounded-lg">
+                    </a>
+                    <a href="{{ route('items.map', ['query' => '醤油']) }}" class="block">
+                        <img src="{{ asset('images/soysause_sample.jpg') }}" alt="醤油" class="w-full h-32 object-cover rounded-lg">
+                    </a>
+                </div>
+            </section>
 
-<section class="my-5">
-    <h2 class="text-lg font-medium text-gray-700 px-5 mb-2">食品から探す</h2>
-    <!-- <a href="{{ route('items.foods') }}" class="text-blue-500 px-5 mb-2 inline-block">食品から探す</a> -->
-    <div class="grid grid-cols-3 gap-3 px-3">
-        <a href="{{ route('items.map', ['query' => 'バター']) }}" class="block">
-            <img src="{{ asset('images/butter.jpg') }}" alt="バター" class="w-full h-32 object-cover rounded-lg">
-        </a>
-        <a href="{{ route('items.map', ['query' => 'ネギ']) }}" class="block">
-            <img src="{{ asset('images/negi.jpeg') }}" alt="ネギ" class="w-full h-32 object-cover rounded-lg">
-        </a>
-        <a href="{{ route('items.map', ['query' => 'パスタ']) }}" class="block">
-            <img src="{{ asset('images/pasta.jpeg') }}" alt="パスタ" class="w-full h-32 object-cover rounded-lg">
-        </a>
-    </div>
-</section>
-
+            <section class="my-5">
+                <h2 class="text-lg font-medium text-gray-700 px-5 mb-2">食品から探す</h2>
+                <!-- <a href="{{ route('items.foods') }}" class="text-blue-500 px-5 mb-2 inline-block">食品から探す</a> -->
+                <div class="grid grid-cols-3 gap-3 px-3">
+                    <a href="{{ route('items.map', ['query' => 'バター']) }}" class="block">
+                        <img src="{{ asset('images/butter.jpg') }}" alt="バター" class="w-full h-32 object-cover rounded-lg">
+                    </a>
+                    <a href="{{ route('items.map', ['query' => 'ネギ']) }}" class="block">
+                        <img src="{{ asset('images/negi.jpeg') }}" alt="ネギ" class="w-full h-32 object-cover rounded-lg">
+                    </a>
+                    <a href="{{ route('items.map', ['query' => 'パスタ']) }}" class="block">
+                        <img src="{{ asset('images/pasta.jpeg') }}" alt="パスタ" class="w-full h-32 object-cover rounded-lg">
+                    </a>
+                </div>
+            </section>
         </main>
 
         <!-- Footer -->
-        <footer class="flex justify-around p-3 bg-gray-800 text-white">
-        <a href="{{ route('items.main') }}" class="text-lg hover:text-blue-400">ホーム</a>
-        <a href="{{ route('account') }}" class="text-lg hover:text-blue-400">アカウント</a>
-        </footer>
+        <x-footer-ver2 />
     </div>
 </body>
-
 </html>
