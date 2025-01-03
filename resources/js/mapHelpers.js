@@ -6,8 +6,6 @@ export async function initMap() {
     try {
         // Google Maps JavaScript APIで必要なライブラリをロード
         const { Map } = await google.maps.importLibrary("maps");
-        const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-        const { PlacesService } = await google.maps.importLibrary("places");
 
         const mapElement = document.getElementById('map');
         if (!mapElement) {
@@ -18,38 +16,11 @@ export async function initMap() {
             center: {
                 lat: 35.6895,
                 lng: 139.6917
-            }, // 初期位置：東京
+            },
             zoom: 13,
             mapId: "c1be8225dc3df8f",
         });
 
-        // Places Serviceの初期化
-        const placesService = new PlacesService(map);
-
-        // 検索バーのイベント
-        const searchBar = document.getElementById('search-bar');
-        if (searchBar) {
-            searchBar.addEventListener('keypress', function() {     // inputイベントではなくkeypressイベントに変更
-                // Enterキー押下時にmap検索を行う。
-                if(event.key === "Enter"){
-                    const query = this.value;   // 検索バーの入力値を設定
-                    const url = new URL(window.location.href);  // 現在のURLを取得
-                    url.searchParams.set("query", query);
-                    window.location.href = url.toString();
-                    fetchLocations(query);
-                }
-            });
-        }
-
-        // 距離指定イベント
-        const distanceSelect = document.getElementById('distance-select');
-        if (distanceSelect) {
-            distanceSelect.addEventListener('change', function() {
-                const distance = this.value;
-                const query = searchBar.value;
-                updateMarkers(distance, query);
-            });
-        }
     } catch (error) {
         console.error('Error initializing map:', error);
     }
@@ -68,7 +39,7 @@ export function fetchLocations(query) {
 }
 
 // マーカーを地図に追加
-async function addMarker(location) {
+export async function addMarker(location) {
     try {
         const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
         const marker = new AdvancedMarkerElement({
@@ -115,7 +86,7 @@ function calculateDistance(lat1, lng1, lat2, lng2) {
 }
 
 // 距離によるマーカー更新
-function updateMarkers(distance, query) {
+export function updateMarkers(distance, query) {
     const center = map.getCenter(); // 地図の中心位置を取得
     const centerLat = center.lat();
     const centerLng = center.lng();
