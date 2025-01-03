@@ -8,9 +8,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Services\ItemService;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\StoreItemRequest;
+use App\Repositories\Interfaces\ItemRepositoryInterface;
 
 class ItemController extends Controller
 {
+    private ItemRepositoryInterface $itemRepository;
+
+    public function __construct(ItemRepositoryInterface $itemRepository) {
+        $this->itemRepository = $itemRepository;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -43,58 +51,24 @@ class ItemController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreItemRequest $request)
     {
-        //
-        // バリデーション
-        $validated = $request->validate([
-            'category' => 'required|string|max:2',
-            'item_name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'price' => 'required|integer|min:1',
-            'expiry_date' => 'required|date',
-            'image_1' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
-            'image_2' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
-            'image_3' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
-            'image_4' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
-        ]);
         // ログイン中のユーザーIDを取得
         $userId = Auth::id();
-
         // 画像ファイルを保存し、パスを取得
-        $imagePaths = [];
-        for ($i = 1; $i <= 4; $i++) {
-            $imageField = "image_{$i}";
-            if ($request->hasFile($imageField)) {
-                // フォルダパスを作成
-                $folderPath = "images/{$userId}";
-                Storage::disk('public')->makeDirectory($folderPath);
-
-                // ファイル名を生成して保存
-                $fileName = $request->file($imageField)->getClientOriginalName();
-                $path = $request->file($imageField)->storeAs($folderPath, $fileName, 'public');
-                // $imagePaths[$imageField] = Storage::url($path); // パブリックURLを取得
-                $imagePaths[$imageField] = "storage/{$path}";
-                // $imagePaths[$imageField] = asset('storage/' . $path);   // asset関数を使用してURLを生成
-            } else {
-                $imagePaths[$imageField] = null;
-            }
-        }
+        $imagePaths = $this->itemRepository->saveImages($request->allFiles(), $userId);
+        // バリデーションと登録情報を設定する。
+        $itemData = array_merge(
+            $request->validated(),
+            [
+                'user_id' => $userId,
+                'list_status' => '0',
+            ],
+            $imagePaths
+        );
 
         // データベースに保存
-        $item = new Item();
-        $item->user_id = $userId;
-        $item->category = $validated['category'];
-        $item->item_name = $validated['item_name'];
-        $item->description = $validated['description'];
-        $item->price = $validated['price'];
-        $item->expiry_date = $validated['expiry_date'];
-        $item->list_status = '0'; // 出品中の状態をデフォルトに設定
-        $item->image_1 = $imagePaths['image_1'];
-        $item->image_2 = $imagePaths['image_2'];
-        $item->image_3 = $imagePaths['image_3'];
-        $item->image_4 = $imagePaths['image_4'];
-        $item->save();
+        $this->itemRepository->create($itemData);
 
         // 成功時のリダイレクト
         return redirect()->route('items.index');
