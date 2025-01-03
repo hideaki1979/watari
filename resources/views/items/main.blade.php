@@ -41,8 +41,7 @@
 
             <!-- Section 2 -->
             <section class="my-5">
-                <h2 class="text-lg font-medium text-gray-700 px-5 mb-2">調味料から探す</h2>
-                <a href="{{ route('items.seasonings') }}" class="text-blue-500 px-5 mb-2 inline-block">調味料から探す</a>
+                <a href="{{ route('items.seasonings') }}" class="text-gray-700 px-5 mb-2 inline-block">調味料から探す</a>
                 <div class="grid grid-cols-3 gap-3 px-3">
                     <a href="{{ route('items.map', ['query' => '塩']) }}" class="block">
                         <img src="{{ asset('images/salt_sample.png') }}" alt="塩" class="w-full h-32 object-cover rounded-lg">
@@ -57,8 +56,7 @@
             </section>
 
             <section class="my-5">
-                <h2 class="text-lg font-medium text-gray-700 px-5 mb-2">食品から探す</h2>
-                <!-- <a href="{{ route('items.foods') }}" class="text-blue-500 px-5 mb-2 inline-block">食品から探す</a> -->
+                <a href="{{ route('items.foods') }}" class="text-gray-700 px-5 mb-2 inline-block">食品から探す</a>
                 <div class="grid grid-cols-3 gap-3 px-3">
                     <a href="{{ route('items.map', ['query' => 'バター']) }}" class="block">
                         <img src="{{ asset('images/butter.jpg') }}" alt="バター" class="w-full h-32 object-cover rounded-lg">
