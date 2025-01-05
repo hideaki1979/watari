@@ -6,6 +6,12 @@
     use Illuminate\Support\Facades\Storage;
 
     class ItemRepository implements ItemRepositoryInterface {
+        protected $model;
+
+        public function __construct(Item $item) {
+            $this->model = $item;
+        }
+
         public function create(array $data): Item {
             return Item::create($data);
         }
@@ -29,6 +35,20 @@
                 }
             }
             return $imagePaths;
+        }
+
+        public function searchByName(string $query) {
+            return $this->model->with('user')   // userリレーションを事前ロード
+                ->where('item_name', 'like', "%{$query}%")
+                ->get();
+        }
+
+        public function getOtherItemsByUser(int $userId, int $currentItemId) {
+            // ユーザーの他の出品物を取得
+            return $this->model
+                ->where('user_id', $userId)
+                ->where('id', '!=', $currentItemId)     // 現在のアイテム以外
+                ->get(['id', 'item_name', 'image_1']);  // IDも含めて取得
         }
     }
 
