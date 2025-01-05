@@ -7,16 +7,21 @@ use App\Models\Delivery;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Services\ItemService;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreItemRequest;
 use App\Repositories\Interfaces\ItemRepositoryInterface;
+use App\Services\LocationService;
 
 class ItemController extends Controller
 {
     private ItemRepositoryInterface $itemRepository;
+    protected $locationService;
 
-    public function __construct(ItemRepositoryInterface $itemRepository) {
+    public function __construct(
+        ItemRepositoryInterface $itemRepository,
+        LocationService $locationService
+    ) {
         $this->itemRepository = $itemRepository;
+        $this->locationService = $locationService;
     }
 
     /**
@@ -151,33 +156,8 @@ class ItemController extends Controller
     public function fetchLocations(Request $request)
     {
         $query = $request->query('query');
-        $items = Item::with('user') // userリレーションを事前ロード
-                    ->where('item_name', 'like', "%$query%")
-                    ->get();
-    
-        $locations = [];
-        foreach ($items as $item) {
-            $delivery = Delivery::where('user_id', $item->user_id)->first(); // 配送情報を取得
-    
-            if ($delivery) {
-                // ユーザーの他の出品物を取得
-                $otherItems = Item::where('user_id', $item->user_id)
-                                ->where('id', '!=', $item->id) // 現在のアイテム以外
-                                ->get(['id', 'item_name', 'image_1']); // IDも含めて取得
-    
-                // 必要な情報を配列に格納
-                $locations[] = [
-                    'item_id' => $item->id, // 現在のアイテムのID
-                    'user_name' => $item->user->name, // ユーザー名
-                    'item_name' => $item->item_name, // 現在のアイテム名
-                    'image_1' => $item->image_1, // 現在のアイテムの画像
-                    'address' => $delivery->address, // 配送住所
-                    'latitude' => $delivery->latitude, // 緯度
-                    'longitude' => $delivery->longitude, // 経度
-                    'items' => $otherItems->toArray(), // 他の出品物
-                ];
-            }
-        }
+        $locations = $this->locationService->getLocations($query);
+
         return response()->json($locations); // JSON形式でレスポンスを返す
     }
  
