@@ -10,10 +10,12 @@ use App\Services\ItemService;
 use App\Http\Requests\StoreItemRequest;
 use App\Repositories\Interfaces\ItemRepositoryInterface;
 use App\Services\LocationService;
+use App\Repositories\Interfaces\DeliveryRepositoryInterface;
 
 class ItemController extends Controller
 {
     private ItemRepositoryInterface $itemRepository;
+    private DeliveryRepositoryInterface $deliveryRepository;
     protected $locationService;
     private $itemService;
 
@@ -21,11 +23,13 @@ class ItemController extends Controller
     public function __construct(
         ItemRepositoryInterface $itemRepository,
         LocationService $locationService,
-        ItemService $itemService
+        ItemService $itemService,
+        DeliveryRepositoryInterface $deliveryRepository
     ) {
         $this->itemRepository = $itemRepository;
         $this->locationService = $locationService;
         $this->itemService = $itemService;
+        $this->deliveryRepository = $deliveryRepository;
     }
 
     /**
@@ -88,14 +92,12 @@ class ItemController extends Controller
      */
     public function show(Item $item)
     {
-        $relatedItems = Item::where('user_id', $item->user_id)
-            ->where('id', '!=', $item->id)
-            ->where('list_status', 0)  // 販売中の商品のみ
-            ->latest()  // 最新の商品から
-            ->take(4)   // 4件まで
-            ->get();
+        $relatedItems = $this->itemRepository->findRelatedItems(
+            $item->user_id,
+            $item->id
+        );
         // 配送先住所の取得
-        $delivery = Delivery::where('user_id', $item->user_id)->first();
+        $delivery = $this->deliveryRepository->findByUserId($item->user_id);
 
         // viewに両方のデータを渡す
         return view('items.show', compact('item', 'relatedItems', 'delivery'));

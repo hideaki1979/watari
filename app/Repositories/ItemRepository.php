@@ -63,6 +63,16 @@
                 ->get();                    // データを取得
         }
 
+        public function findRelatedItems(int $userId, int $itemId, int $limit = 4) {
+            return $this->model
+                ->where('user_id', $userId)     // ユーザーでフィルタ
+                ->where('id', '!=', $itemId)    // 現在のアイテム以外
+                ->where('list_status', 0)       // 販売中の商品のみ
+                ->latest()                      // 最新の商品から
+                ->take($limit)                  // 4件まで
+                ->get();                        // データを取得
+        }
+
     }
 
 ?>
