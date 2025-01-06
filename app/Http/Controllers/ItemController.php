@@ -169,10 +169,8 @@ class ItemController extends Controller
  
     public function buy(Item $item)
     {
-        // list_statusを1（売却済み）に更新
-        $item->update([
-            'list_status' => 1
-        ]);
+        // Repository経由でlist_statusを1（売却済み）に更新
+        $this->itemRepository->updateListStatus($item, 1);
 
         // 購入完了ページへリダイレクト
         return view('items.buy', compact('item'));

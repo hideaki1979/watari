@@ -73,6 +73,12 @@
                 ->get();                        // データを取得
         }
 
+        public function updateListStatus(Item $item, int $status): bool {
+            return $item->update([
+                'list_status' => $status
+            ]);
+        }
+
     }
 
 ?>
