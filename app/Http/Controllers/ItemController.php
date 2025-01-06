@@ -15,27 +15,31 @@ class ItemController extends Controller
 {
     private ItemRepositoryInterface $itemRepository;
     protected $locationService;
+    private $itemService;
 
+    // 必要なサービスをコンストラクタで注入
     public function __construct(
         ItemRepositoryInterface $itemRepository,
-        LocationService $locationService
+        LocationService $locationService,
+        ItemService $itemService
     ) {
         $this->itemRepository = $itemRepository;
         $this->locationService = $locationService;
+        $this->itemService = $itemService;
     }
 
     /**
-     * Display a listing of the resource.
+     * 一覧表示のメソッド
      */
-    public function index(ItemService $itemService)
+    public function index()
     {
         //
         // ログイン中のユーザーIDを取得
         $userId = Auth::id();
 
-        // 出品中と売却済のデータを取得
-        $availableItems = $itemService->getItemsByStatus($userId, '0'); // 出品中
-        $soldItems = $itemService->getItemsByStatus($userId, '1');     // 売却済
+        // 出品中（'0'）と売却済（'1'）のデータを取得
+        $availableItems = $this->itemService->getItemsByStatus($userId, '0'); // 出品中
+        $soldItems = $this->itemService->getItemsByStatus($userId, '1');     // 売却済
 
         // ビューにデータを渡す
         return view('items.index', [
