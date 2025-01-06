@@ -11,6 +11,7 @@ interface ItemRepositoryInterface {
     public function getOtherItemsByUser(int $userId, int $currentItemId);
     public function getByUserIdAndStatus(int $userId, string $listStatus);
     public function findRelatedItems(int $userId, int $itemId, int $limit = 4);
+    public function updateListStatus(Item $item, int $status): bool;
 }
 
 ?>
