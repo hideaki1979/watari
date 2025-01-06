@@ -12,6 +12,8 @@
             $this->model = $item;
         }
 
+        // インターフェースで定義したメソッドの実装
+        // Itemsテーブルのレコードを作成
         public function create(array $data): Item {
             return Item::create($data);
         }
@@ -37,6 +39,7 @@
             return $imagePaths;
         }
 
+        // 商品名（あいまい検索）で検索
         public function searchByName(string $query) {
             return $this->model->with('user')   // userリレーションを事前ロード
                 ->where('item_name', 'like', "%{$query}%")
@@ -50,6 +53,16 @@
                 ->where('id', '!=', $currentItemId)     // 現在のアイテム以外
                 ->get(['id', 'item_name', 'image_1']);  // IDも含めて取得
         }
+
+        // 指定されたユーザーIDと出品状態に基づいてアイテムを取得する
+        public function getByUserIdAndStatus(int $userId, string $listStatus) {
+            return $this->model
+                ->forUser($userId)          // ユーザーでフィルタ
+                ->withStatus($listStatus)   // 出品状態でフィルタ
+                ->latestFirst()             // 新しい順でソート
+                ->get();                    // データを取得
+        }
+
     }
 
 ?>
