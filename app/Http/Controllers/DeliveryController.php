@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Delivery;
 use Illuminate\Http\Request;
+use App\Repositories\Interfaces\DeliveryRepositoryInterface;
 // Laravelで外部APIを呼び出す際に使用するHTTPクライアントを提供するファサード
 use Illuminate\Support\Facades\Http; 
 use Illuminate\Support\Facades\Log;
@@ -11,15 +12,18 @@ use Illuminate\Support\Facades\Auth;
 
 class DeliveryController extends Controller
 {
+    protected $deliveryRepository;
+
+    public function __construct(DeliveryRepositoryInterface $deliveryRepository) {
+      $this->deliveryRepository = $deliveryRepository;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-      $deliveries = Delivery::with('user')
-          ->where('user_id', Auth::id())
-          ->latest()
-          ->get();
+      $deliveries = $this->deliveryRepository->getAllByUser(Auth::id());
       
       // APIキーを追加
       $apiKey = env('API_KEY');
