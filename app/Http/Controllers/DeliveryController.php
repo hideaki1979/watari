@@ -5,19 +5,24 @@ namespace App\Http\Controllers;
 use App\Models\Delivery;
 use Illuminate\Http\Request;
 use App\Repositories\Interfaces\DeliveryRepositoryInterface;
-// Laravelで外部APIを呼び出す際に使用するHTTPクライアントを提供するファサード
-use Illuminate\Support\Facades\Http; 
+use App\Http\Requests\StoreDeliveryRequest;
+use App\Services\GeocodingService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;  
 
 class DeliveryController extends Controller
 {
     protected $deliveryRepository;  // リポジトリのインスタンスを保持する変数
+    protected $geocodingService;  // サービスのインスタンスを保持する変数
 
     // コンストラクタ：依存性の注入を受け取る
-    public function __construct(DeliveryRepositoryInterface $deliveryRepository) {
+    public function __construct(
+      DeliveryRepositoryInterface $deliveryRepository,
+      GeocodingService $geocodingService
+      ) {
       // 注入されたリポジトリのインスタンスを保存
       $this->deliveryRepository = $deliveryRepository;
+      $this->geocodingService = $geocodingService;
     }
 
     /**
@@ -48,35 +53,24 @@ class DeliveryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreDeliveryRequest $request)
     {
-      $validated = $request->validate([
-        'address' => 'required|string|max:255',
-      ]);
       try {
+        $validated = $request->validated();
         //Geocoding APIへのリクエスト
-        $response = Http::get('https://maps.googleapis.com/maps/api/geocode/json', [
-          'address' => $validated['address'],
-          'key' => env('API_KEY'),
-          'language' => 'ja',
-        ]);
-         // APIレスポンスの確認と処理
-        if ($response->successful() && $response['status'] === 'OK') {
-          $location = $response['results'][0]['geometry']['location'];
-          //dbへの保存
-          Delivery::create([
-            'address' => $validated['address'],
-            'latitude' => $location['lat'],
-            'longitude' => $location['lng'],
-            'user_id' => Auth::id(), 
-          ]);
-          return redirect()->route('deliveries.index')
-            ->with('success', '登録が完了しました');
+        $location = $this->geocodingService->getLocation($validated['address']);
+
+        if(!$location) {
+          return back()->withInput()
+            ->withErrors(['address' => 'アドレスから位置情報を取得できませんでした']);
         }
 
-        return back()->withInput()
-          ->withErrors(['address' => 'アドレスから位置情報を取得できませんでした']);
-
+        $this->deliveryRepository->createDelivery(
+          $validated, $location, Auth::id()
+        );
+      
+        return redirect()->route('deliveries.index')
+          ->with('success', '登録が完了しました');
       } catch (\Exception $e) {
           Log::error('Geocoding error: ' . $e->getMessage());
           

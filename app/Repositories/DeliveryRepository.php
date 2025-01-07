@@ -22,6 +22,15 @@
                 ->latest()          // 最新のレコードから順に取得
                 ->get();            // クエリを実行して検索結果を取得
         }
+
+        public function createDelivery(array $validated, array $location, int $userId) {
+            return $this->model->create([
+                'address' => $validated['address'],
+                'latitude' => $location['lat'],
+                'longitude' => $location['lng'],
+                'user_id' => $userId,
+            ]);
+        }
     }
 
 ?>

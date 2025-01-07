@@ -7,6 +7,8 @@ interface DeliveryRepositoryInterface {
     public function findByUserId(int $userId);
     // 特定ユーザーの全配送情報を取得するメソッドを宣言
     public function getAllByUser(int $userId);
+    // deliveriesテーブルの登録処理
+    public function createDelivery(array $validated, array $location, int $userId);
 }
 
 ?>
