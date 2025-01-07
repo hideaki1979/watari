@@ -12,20 +12,24 @@ use Illuminate\Support\Facades\Auth;
 
 class DeliveryController extends Controller
 {
-    protected $deliveryRepository;
+    protected $deliveryRepository;  // リポジトリのインスタンスを保持する変数
 
+    // コンストラクタ：依存性の注入を受け取る
     public function __construct(DeliveryRepositoryInterface $deliveryRepository) {
+      // 注入されたリポジトリのインスタンスを保存
       $this->deliveryRepository = $deliveryRepository;
     }
 
     /**
      * Display a listing of the resource.
      */
+    // 配送一覧を表示するアクション
     public function index()
     {
+      // リポジトリを使用して現在のユーザーの配送情報を取得
       $deliveries = $this->deliveryRepository->getAllByUser(Auth::id());
       
-      // APIキーを追加
+      // 環境変数からAPIキーを追加
       $apiKey = env('API_KEY');
 
       // 両方のデータをviewに渡す
@@ -37,7 +41,7 @@ class DeliveryController extends Controller
      */
     public function create()
     {
-      $deliveries = Delivery::where('user_id', Auth::id())->get();
+      $deliveries = $this->deliveryRepository->getAllByUser(Auth::id());
       return view('deliveries.create', compact('deliveries'));
     }
 
