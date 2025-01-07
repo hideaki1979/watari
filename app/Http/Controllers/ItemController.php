@@ -14,8 +14,10 @@ use App\Repositories\Interfaces\DeliveryRepositoryInterface;
 
 class ItemController extends Controller
 {
+    // リポジトリのインスタンスを保持する変数
     private ItemRepositoryInterface $itemRepository;
     private DeliveryRepositoryInterface $deliveryRepository;
+    // サービスのインスタンスを保持する変数
     protected $locationService;
     private $itemService;
 

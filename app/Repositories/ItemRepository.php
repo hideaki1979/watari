@@ -6,10 +6,11 @@
     use Illuminate\Support\Facades\Storage;
 
     class ItemRepository implements ItemRepositoryInterface {
-        protected $model;
+        protected $model;   // Itemモデルのインスタンスを保持する変数
 
+        // コンストラクタ：クラスのインスタンス作成時に実行される
         public function __construct(Item $item) {
-            $this->model = $item;
+            $this->model = $item;   // Itemモデルのインスタンスを保存
         }
 
         // インターフェースで定義したメソッドの実装
@@ -63,6 +64,7 @@
                 ->get();                    // データを取得
         }
 
+        // ユーザーのの他出品物（出品中）を取得（最大4件）
         public function findRelatedItems(int $userId, int $itemId, int $limit = 4) {
             return $this->model
                 ->where('user_id', $userId)     // ユーザーでフィルタ
@@ -73,6 +75,7 @@
                 ->get();                        // データを取得
         }
 
+        // 出品状態を更新
         public function updateListStatus(Item $item, int $status): bool {
             return $item->update([
                 'list_status' => $status

@@ -8,6 +8,9 @@
     use App\Repositories\DeliveryRepository;
 
     class RepositoryServiceProvider extends ServiceProvider {
+        // サービスコンテナへの登録処理
+        // インターフェースとその実装クラスの紐付けを行う
+        // これにより、インターフェースが要求された時に実装クラスが自動的に注入される
         public function register() {
             $this->app->bind(
                 ItemRepositoryInterface::class,
