@@ -14,6 +14,13 @@
         public function findByUserId(int $userId) {
             return $this->model->where('user_id', $userId)->first();
         }
+
+        public function getAllByUser(int $userId) {
+            return $this->model->with('user')
+                ->forUser($userId)  // スコープを使用
+                ->latest()
+                ->get();
+        }
     }
 
 ?>
