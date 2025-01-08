@@ -36,7 +36,6 @@ export async function initMap() {
 // 地図移動後の中心位置取得・マーカー更新処理
 async function updateMarkerForCurrentView() {
     const center = map.getCenter(); // 地図の中心位置を取得
-    console.log(`距離変更Helper_CurrentView：${currentDistance}`);
     const params = new URLSearchParams({
         query: currentQuery,
         distance: currentDistance,
@@ -64,7 +63,6 @@ export async function searchLocations(query) {
 // 距離変更時にマーカー更新
 export async function updateDistance(distance) {
     currentDistance = distance;
-    console.log(`距離変更Helper：${currentDistance}`);
     await updateMarkerForCurrentView();
 }
 

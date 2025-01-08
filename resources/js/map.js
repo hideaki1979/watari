@@ -10,10 +10,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // 初期値の設定
     let currentQuery = searchBar?.value || '';
-    let currentDistance = distanceSelect?.value || '100';
 
     distanceSelect?.addEventListener('change', () => {
-        console.log(`距離変更：${distanceSelect.value}`);
         updateDistance(distanceSelect.value);
     });
 
