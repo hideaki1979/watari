@@ -163,10 +163,25 @@ class ItemController extends Controller
 
     public function fetchLocations(Request $request)
     {
-        $query = $request->query('query');
-        $locations = $this->locationService->getLocations($query);
+        $lat = $request->query('lat');
+        $lng = $request->query('lng');
 
-        return response()->json($locations); // JSON形式でレスポンスを返す
+        // 必須パラメータのバリデーション
+        if(!$lat || !$lng) {
+            return response()->json([
+                'error' => '経度・緯度は必須です。'
+            ], 400);
+        }
+
+        try {
+            $locations = $this->locationService->getLocations($request);
+    
+            return response()->json($locations); // JSON形式でレスポンスを返す
+        } catch(\Exception $e) {
+            return response()->json([
+                'error' => 'データ取得に失敗しました。'
+            ], 500);
+        }
     }
  
     public function buy(Item $item)

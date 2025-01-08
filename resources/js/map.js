@@ -1,4 +1,4 @@
-import { initMap, fetchLocations, updateMarkers } from "./mapHelpers";
+import { initMap, searchLocations, updateDistance } from "./mapHelpers";
 
 document.addEventListener('DOMContentLoaded', async () => {
     
@@ -8,28 +8,30 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 地図の初期化を待つ
     await initMap();
 
-    if (distanceSelect) {
-        distanceSelect.addEventListener('change', () => {
-            const distance = distanceSelect.value;
-            const query = searchBar ? searchBar.value : '';
-            updateMarkers(distance, query);
-        });
-    }
+    // 初期値の設定
+    let currentQuery = searchBar?.value || '';
+    let currentDistance = distanceSelect?.value || '100';
 
-    if (searchBar) {
-        searchBar.addEventListener('keypress', (event) => {
-            if(event.key === "Enter"){
-                const query = searchBar.value;
-                const url = new URL(window.location.href);
-                url.searchParams.set("query", query);
-                window.location.href = url.toString();
-                fetchLocations(query);
-            }
-        });
-    }
+    distanceSelect?.addEventListener('change', () => {
+        console.log(`距離変更：${distanceSelect.value}`);
+        updateDistance(distanceSelect.value);
+    });
 
-    const query = "{{ $query ?? '' }}";
-    if(query) {
-        fetchLocations(query);
+    searchBar?.addEventListener('keypress', async (event) => {
+        if(event.key === "Enter"){
+            event.preventDefault();
+            const query = searchBar.value;
+
+            // ページリロードなしでURLを更新
+            const url = new URL(window.location.href);
+            url.searchParams.set("query", query);
+            window.history.pushState({}, '', url);
+            await searchLocations(query);
+        }
+    });
+
+    // キーワードがある場合は検索処理を実施
+    if(currentQuery) {
+        searchLocations(currentQuery);
     }
 });
