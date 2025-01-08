@@ -1,5 +1,7 @@
-let map;
-let markers = [];
+let map;                        // GoogleMapsAPIのインスタンスを保持
+let markers = [];               // マーカーを配列で管理
+let currentQuery = '';          // 現在の検索クエリ
+let currentDistance = '100';    // 現在の検索距離
 
 // 地図の初期化
 export async function initMap() {
@@ -12,7 +14,9 @@ export async function initMap() {
             console.error('Map element not found');
             return;
         }
+        // 東京を中心地に初期設定
         map = new Map(mapElement, {
+            // 東京の座標
             center: {
                 lat: 35.6895,
                 lng: 139.6917
@@ -20,42 +24,69 @@ export async function initMap() {
             zoom: 13,
             mapId: "c1be8225dc3df8f",
         });
-
+        // 地図の移動が終わった時のイベントリスナー
+        map.addListener('idle', () => {
+            updateMarkerForCurrentView();
+        });
     } catch (error) {
         console.error('Error initializing map:', error);
     }
 }
 
-// サーバーからロケーションデータを取得
-export function fetchLocations(query) {
-    fetch(`api/locations?query=${query}`)
-        .then(response => response.json())
-        .then(data => {
-            clearMarkers();
-            data.forEach(location => {
-                addMarker(location);
-            });
-        });
+// 地図移動後の中心位置取得・マーカー更新処理
+async function updateMarkerForCurrentView() {
+    const center = map.getCenter(); // 地図の中心位置を取得
+    const params = new URLSearchParams({
+        query: currentQuery,
+        distance: currentDistance,
+        lat: center.lat(),
+        lng: center.lng()
+    });
+
+    try {
+        const response = await fetch(`api/locations?${params}`);
+        if(!response.ok) throw new Error('住所取得処理でエラーが発生しました。');
+
+        const data = await response.json();
+        refreshMarker(data);
+    } catch(error) {
+        console.error('住所取得エラー：', error);
+    }
 }
 
-// マーカーを地図に追加
-export async function addMarker(location) {
+// キーワード変更時にマーカー更新
+export async function searchLocations(query) {
+    currentQuery = query;
+    await updateMarkerForCurrentView();    
+}
+
+// 距離変更時にマーカー更新
+export async function updateDistance(distance) {
+    currentDistance = distance;
+    await updateMarkerForCurrentView();
+}
+
+// マーカー表示をリフレッシュする
+async function refreshMarker(locations) {
+    clearMarkers(); // マーカーをクリアする
     try {
         const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-        const marker = new AdvancedMarkerElement({
-            position: {
-                lat: parseFloat(location.latitude),
-                lng: parseFloat(location.longitude)
-            },
-            map: map,
-            title: location.item_name
-        });
 
-        marker.addListener('click', () => {
-            showDetails(location);
-        });
+        for(const location of locations) {
+            if(!location.latitude || !location.longitude) continue;
 
-        markers.push(marker);
+            const marker = new AdvancedMarkerElement({
+                position: {
+                    lat: parseFloat(location.latitude),
+                    lng: parseFloat(location.longitude)
+                },
+                map: map,
+                title: location.item_name
+            });
+    
+            marker.addListener('click', () => showDetails(location));
+            markers.push(marker);
+        }
     } catch (error) {
         console.error('Error adding marker:', error);
     }        
@@ -65,51 +96,5 @@ export async function addMarker(location) {
 function clearMarkers() {
     markers.forEach(marker => marker.setMap(null));
     markers = [];
-}
-
-// 現在地図の中心位置からの距離を計算する関数
-function calculateDistance(lat1, lng1, lat2, lng2) {
-    const R = 6371000; // 地球の半径（メートル）
-    const toRadians = (deg) => (deg * Math.PI) / 180;
-
-    const dLat = toRadians(lat2 - lat1);
-    const dLng = toRadians(lng2 - lng1);
-    const a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(toRadians(lat1)) *
-        Math.cos(toRadians(lat2)) *
-        Math.sin(dLng / 2) *
-        Math.sin(dLng / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-    return R * c; // 距離（メートル）
-}
-
-// 距離によるマーカー更新
-export function updateMarkers(distance, query) {
-    const center = map.getCenter(); // 地図の中心位置を取得
-    const centerLat = center.lat();
-    const centerLng = center.lng();
-
-    // 現在のマーカーをすべてクリア
-    clearMarkers();
-
-    // 新しい距離に基づいてマーカーを表示
-    fetch(`api/locations?query=${query}`) // すべてのロケーションを取得
-        .then(response => response.json())
-        .then(data => {
-            data.forEach(location => {
-                const distanceToMarker = calculateDistance(
-                    centerLat,
-                    centerLng,
-                    location.latitude,
-                    location.longitude
-                );
-
-                if (distanceToMarker <= distance) {
-                    addMarker(location);
-                }
-            });
-        });
 }
 
