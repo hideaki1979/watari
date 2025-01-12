@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\DmController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\PurchaseController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -21,6 +22,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('deliveries', DeliveryController::class);
     Route::resource('items', ItemController::class);
     Route::resource('dms', DmController::class);
+    Route::resource('purchases', PurchaseController::class);
     Route::get('/main', [ItemController::class, 'main'])->name('items.main');
     Route::get('/seasonings', [ItemController::class, 'showSeasonings'])->name('items.seasonings');
     Route::get('/foods', [ItemController::class, 'showFoods'])->name('items.foods');

@@ -50,7 +50,7 @@
     </>
      <!-- Footer -->
      @section('footer')
-     <x-footer />
+     <x-footer-ver2 />
      @endsection
      <script>
         document.addEventListener('DOMContentLoaded', function () {

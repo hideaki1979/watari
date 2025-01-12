@@ -75,7 +75,7 @@
 
     <!-- Footer -->
     @section('footer')
-    <x-footer />
+    <x-footer-ver2 />
     @endsection
     <script>
         function handleFileSelect(event, index) {

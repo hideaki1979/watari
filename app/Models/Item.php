@@ -25,8 +25,14 @@ class Item extends Model
         'image_4'
     ];
 
+    // ItemとUserは多対1のリレーション
     public function user() {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    // ItemとPurchaseは1:1のリレーション
+    public function purchase(): HasOne {
+        return $this->hasOne(purchase::class, 'item_id', 'id');
     }
 
     // スコープメソッドの説明
