@@ -22,7 +22,7 @@
                 <span>出品登録</span>
             </a>
             <!-- 購入履歴 -->
-            <a href="#" class="block w-32 h-32 p-6 bg-gray-100 flex flex-col items-center justify-center shadow-md hover:bg-gray-200">
+            <a href="{{ route('purchases.index', ['user_id' => Auth::user()->id]) }}"" class="block w-32 h-32 p-6 bg-gray-100 flex flex-col items-center justify-center shadow-md hover:bg-gray-200">
                 <i class="fa-solid fa-clock-rotate-left w-8 h-8 mb-2"></i>
                 <span>購入履歴</span>
             </a>
@@ -44,7 +44,7 @@
 
     <!-- Footer -->
     @section('footer')
-    <x-footer />
+    <x-footer-ver2 />
     @endsection
 </div>
 </x-accountcom-layout>

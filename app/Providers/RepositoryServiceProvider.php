@@ -6,6 +6,8 @@
     use App\Repositories\ItemRepository;
     use App\Repositories\Interfaces\DeliveryRepositoryInterface;
     use App\Repositories\DeliveryRepository;
+    use App\Repositories\Interfaces\PurchaseRepositoryInterface;
+    use App\Repositories\PurchaseRepository;
 
     class RepositoryServiceProvider extends ServiceProvider {
         // サービスコンテナへの登録処理
@@ -20,6 +22,11 @@
             $this->app->bind(
                 DeliveryRepositoryInterface::class,
                 DeliveryRepository::class
+            );
+
+            $this->app->bind(
+                PurchaseRepositoryInterface::class,
+                PurchaseRepository::class
             );
         }
     }
