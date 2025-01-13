@@ -2,6 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Purchase;
+use App\Models\User;
+use App\Models\Item;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,6 +12,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class PurchaseFactory extends Factory
 {
+    protected $model = Purchase::class;
+
     /**
      * Define the model's default state.
      *
@@ -18,6 +23,10 @@ class PurchaseFactory extends Factory
     {
         return [
             //
+            'user_id' => User::factory(),
+            'item_id' => Item::factory(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }
