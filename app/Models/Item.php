@@ -25,6 +25,10 @@ class Item extends Model
         'image_4'
     ];
 
+    protected $casts = [
+        'expiry_date' => 'datetime',
+    ];
+
     // ItemとUserは多対1のリレーション
     public function user() {
         return $this->belongsTo(User::class, 'user_id', 'id');
