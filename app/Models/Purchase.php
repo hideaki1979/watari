@@ -11,6 +11,11 @@ class Purchase extends Model
     /** @use HasFactory<\Database\Factories\PurchaseFactory> */
     use HasFactory;
 
+    protected $fillable = [
+        'user_id',
+        'item_id',
+    ];
+
     public function item(): BelongsTo {
         // return $this->belongsTo(Item::class, 'item_id', 'id');
         return $this->belongsTo(Item::class);

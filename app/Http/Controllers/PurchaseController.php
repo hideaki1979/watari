@@ -2,18 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Item;
 use App\Models\Purchase;
 use Illuminate\Http\Request;
 use App\Repositories\Interfaces\PurchaseRepositoryInterface;
+use App\Services\PurchaseService;
 use Illuminate\Support\Facades\Auth;
 
 class PurchaseController extends Controller
 {
     // リポジトリのインスタンスを保持する変数
     private $purchaseRepository;
+    private $purchaseService;
 
-    public function __construct(PurchaseRepositoryInterface $purchaseRepository) {
+    public function __construct(
+        PurchaseRepositoryInterface $purchaseRepository,
+        PurchaseService $purchaseService
+        ) {
         $this->purchaseRepository = $purchaseRepository;
+        $this->purchaseService = $purchaseService;
     }
 
     /**
@@ -72,5 +79,17 @@ class PurchaseController extends Controller
     public function destroy(Purchase $purchase)
     {
         //
+    }
+
+    // 商品購入処理（purchasesテーブルの登録とitemsテーブルの商品ステータスの更新）
+    public function purchase(Item $item) {
+        try {
+            // 購入処理を実行
+            $purchase = $this->purchaseService->processPurchase($item);
+            return view('items.buy', compact('item'));
+        } catch(Exception $e) {
+            Log::error("Purchase method failed：".$e->getMessage());
+            return back()->with('error', '購入処理に失敗しました。');
+        }
     }
 }
