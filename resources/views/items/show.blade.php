@@ -30,7 +30,7 @@
         <!-- 商品情報 -->
         <div class="p-4">
             <h1 class="text-xl font-bold mb-2">{{ $item->item_name }}</h1>
-            
+
             <!-- 出品者情報 -->
             <div class="flex items-center mb-4">
                 <div class="ml-2">
@@ -62,7 +62,7 @@
             </div>
 
             <!-- 購入ボタン -->
-            <form action="{{ route('items.buy', $item) }}" method="POST" class="mb-6">
+            <form action="{{ route('purchases.purchase', $item) }}" method="POST" class="mb-6">
                 @csrf
                 <button type="submit" class="w-full bg-blue-500 text-white py-3 rounded-lg font-bold hover:bg-blue-600 transition duration-200">
                     購入する
@@ -78,8 +78,8 @@
                     <div class="border rounded-lg p-3">
                         <a href="{{ route('items.show', $relatedItem) }}" class="block">
                             @if($relatedItem->image_1)
-                                <img src="{{ asset($relatedItem->image_1) }}" 
-                                     alt="{{ $relatedItem->item_name }}" 
+                                <img src="{{ asset($relatedItem->image_1) }}"
+                                     alt="{{ $relatedItem->item_name }}"
                                      class="w-full h-32 object-cover rounded-lg mb-2">
                             @endif
                             <p class="font-bold">{{ $relatedItem->item_name }}</p>

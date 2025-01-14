@@ -175,21 +175,12 @@ class ItemController extends Controller
 
         try {
             $locations = $this->locationService->getLocations($request);
-    
+
             return response()->json($locations); // JSON形式でレスポンスを返す
         } catch(\Exception $e) {
             return response()->json([
                 'error' => 'データ取得に失敗しました。'
             ], 500);
         }
-    }
- 
-    public function buy(Item $item)
-    {
-        // Repository経由でlist_statusを1（売却済み）に更新
-        $this->itemRepository->updateListStatus($item, 1);
-
-        // 購入完了ページへリダイレクト
-        return view('items.buy', compact('item'));
     }
 }

@@ -5,10 +5,10 @@
     use App\Repositories\Interfaces\PurchaseRepositoryInterface;
 
     class PurchaseRepository implements PurchaseRepositoryInterface {
-        protected $model;   // Itemモデルのインスタンスを保持する変数
+        private $model;   // Purchaseモデルのインスタンスを保持する変数
 
-        public function __construct(Purchase $model) {
-            $this->model = $model;
+        public function __construct(Purchase $purchase) {
+            $this->model = $purchase;
         }
 
         public function getAllPurchaseByUserId(int $userId) {
@@ -17,6 +17,10 @@
                 ->where('user_id', $userId)
                 ->orderBy('created_at', 'desc')
                 ->get();
+        }
+
+        public function create(array $data) {
+            return $this->model->create($data);
         }
     }
 
