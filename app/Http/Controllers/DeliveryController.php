@@ -8,7 +8,7 @@ use App\Repositories\Interfaces\DeliveryRepositoryInterface;
 use App\Http\Requests\StoreDeliveryRequest;
 use App\Services\GeocodingService;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;  
+use Illuminate\Support\Facades\Auth;
 
 class DeliveryController extends Controller
 {
@@ -33,9 +33,9 @@ class DeliveryController extends Controller
     {
       // リポジトリを使用して現在のユーザーの配送情報を取得
       $deliveries = $this->deliveryRepository->getAllByUser(Auth::id());
-      
-      // 環境変数からAPIキーを追加
-      $apiKey = env('API_KEY');
+
+      // 設定からGoogle Maps APIキーを取得
+      $apiKey = config('services.google.maps_api_key');
 
       // 両方のデータをviewに渡す
       return view('deliveries.index', compact('deliveries', 'apiKey'));
@@ -68,12 +68,12 @@ class DeliveryController extends Controller
         $this->deliveryRepository->createDelivery(
           $validated, $location, Auth::id()
         );
-      
+
         return redirect()->route('deliveries.index')
           ->with('success', '登録が完了しました');
       } catch (\Exception $e) {
           Log::error('Geocoding error: ' . $e->getMessage());
-          
+
           return back()->withInput()
             ->withErrors(['address' => '位置情報の処理中にエラーが発生しました']);
       }

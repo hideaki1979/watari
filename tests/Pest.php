@@ -45,3 +45,14 @@ function something()
 {
     // ..
 }
+
+/**
+ * 購入履歴を作成するヘルパー関数
+ */
+function createPurchase($userId, $itemId, $attributes = [])
+{
+    return Purchase::factory()->create(array_merge([
+        'user_id' => $userId,
+        'item_id' => $itemId,
+    ], $attributes));
+}

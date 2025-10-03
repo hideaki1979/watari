@@ -17,12 +17,10 @@ class Purchase extends Model
     ];
 
     public function item(): BelongsTo {
-        // return $this->belongsTo(Item::class, 'item_id', 'id');
         return $this->belongsTo(Item::class);
     }
 
     public function user(): BelongsTo {
-        // return $this->belongsTo(User::class, 'user_id', 'id');
         return $this->belongsTo(User::class);
     }
 }

@@ -101,7 +101,7 @@
                 }));
             d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n));
             })({
-                key: "AIzaSyCgq9tyJWnjgm0qPKeWmGzCenlTbrq7Tr8",
+                key: "{{ config('services.google.maps_api_key') }}",
                 v: "weekly",
                 libraries: ["places", "marker"]
         });
