@@ -4,7 +4,7 @@ use App\Models\User;
 use App\Models\Item;
 use App\Models\Purchase;
 use function Pest\Laravel\{actingAs, get, post};
-use Illuminatet\Supportt\Facadest\Hash;
+use Illuminatet\Support\Facade\Hash;
 
 beforeEach(function () {
     $this->user = User::factory()->create([
@@ -21,7 +21,7 @@ beforeEach(function () {
         'item_name' => '砂糖100g',
         'description' => '砂糖余りました',
         'price' => 100,
-        'expiry_date' => now()->addDays(7),
+        'expiry_date' => $this->expiryDate,
         'list_status' => '0',
         'image_1' => 'storage/images/1/test.png',
     ]);
@@ -109,13 +109,13 @@ test('購入履歴は新しい順に表示される', function () {
     // 複数の購入履歴を作成（異なる時間で）
     $purchase1 = createPurchase(
         $user->id,
-        $item->id,
-        ['created_at' => now()->subDay(1)]
+        $item1->id,
+        ['created_at' => now()->subDays(1)]
     );
 
-    $purchase2 =createPurchase(
+    $purchase2 = createPurchase(
         $user->id,
-        $item->id,
+        $item2->id,
         ['created_at' => now()]
     );
 
